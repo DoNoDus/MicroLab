@@ -1,0 +1,10 @@
+../Core/Src/main.c:71:6:clear_lcd	8	static
+../Core/Src/main.c:88:7:convert_data	24	static
+../Core/Src/main.c:95:10:checkTemp	16	static
+../Core/Src/main.c:107:6:led_display	56	static
+../Core/Src/main.c:124:5:main	112	static
+../Core/Src/main.c:198:6:SystemClock_Config	88	static
+../Core/Src/main.c:237:13:MX_ADC1_Init	24	static
+../Core/Src/main.c:287:13:MX_I2C1_Init	8	static
+../Core/Src/main.c:333:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:375:6:Error_Handler	4	static

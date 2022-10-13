@@ -1,0 +1,20 @@
+08:10:34 **** Incremental Build of configuration Debug for project NewProject ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DDEBUG -DSTM32F429xx -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "NewProject.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\chira\STM32CubeIDE\workspace_1.3.0\NewProject\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="NewProject.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: NewProject.elf
+ 
+arm-none-eabi-objdump -h -S  NewProject.elf  > "NewProject.list"
+arm-none-eabi-objcopy  -O binary  NewProject.elf  "NewProject.bin"
+arm-none-eabi-size   NewProject.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11040	     36	   1732	  12808	   3208	NewProject.elf
+Finished building: default.size.stdout
+ 
+Finished building: NewProject.bin
+ 
+Finished building: NewProject.list
+ 
+
+08:10:36 Build Finished. 0 errors, 0 warnings. (took 1s.402ms)
+

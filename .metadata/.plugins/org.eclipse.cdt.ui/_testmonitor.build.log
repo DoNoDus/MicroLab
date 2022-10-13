@@ -1,0 +1,10 @@
+09:49:54 **** Incremental Build of configuration Debug for project _testmonitor ****
+make -j8 all 
+arm-none-eabi-size   _testmonitor.elf 
+   text	   data	    bss	    dec	    hex	filename
+   4672	     20	   1572	   6264	   1878	_testmonitor.elf
+Finished building: default.size.stdout
+ 
+
+09:49:54 Build Finished. 0 errors, 0 warnings. (took 658ms)
+

@@ -1,0 +1,30 @@
+09:49:50 **** Incremental Build of configuration Debug for project Project1 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/LM35.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DDEBUG -DSTM32F429xx -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/LM35.d" -MT"Core/Src/LM35.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/LM35.o"
+../Core/Src/LM35.c: In function 'LM35_Init':
+../Core/Src/LM35.c:40:27: error: 'ADC_SCAN_DISABLE' undeclared (first use in this function); did you mean '__ADC_CLK_DISABLE'?
+  hadc.Init.ScanConvMode = ADC_SCAN_DISABLE;
+                           ^~~~~~~~~~~~~~~~
+                           __ADC_CLK_DISABLE
+../Core/Src/LM35.c:40:27: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/LM35.c:48:17: error: 'ADC_REGULAR_RANK_1' undeclared (first use in this function); did you mean 'IS_ADC_REGULAR_RANK'?
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+                 ^~~~~~~~~~~~~~~~~~
+                 IS_ADC_REGULAR_RANK
+../Core/Src/LM35.c:49:25: error: 'ADC_SAMPLETIME_28CYCLES_5' undeclared (first use in this function); did you mean 'ADC_SAMPLETIME_2CYCLE_5'?
+  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+                         ADC_SAMPLETIME_2CYCLE_5
+../Core/Src/LM35.c:54:3: warning: implicit declaration of function 'HAL_ADCEx_Calibration_Start'; did you mean 'HAL_ADCEx_InjectedStart'? [-Wimplicit-function-declaration]
+   HAL_ADCEx_Calibration_Start(&hadc);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   HAL_ADCEx_InjectedStart
+../Core/Src/LM35.c:57:2: warning: implicit declaration of function 'DWT_Delay_Init'; did you mean 'HAL_DeInit'? [-Wimplicit-function-declaration]
+  DWT_Delay_Init();
+  ^~~~~~~~~~~~~~
+  HAL_DeInit
+make: *** [Core/Src/subdir.mk:42: Core/Src/LM35.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+
+09:49:52 Build Failed. 4 errors, 2 warnings. (took 1s.292ms)
+
