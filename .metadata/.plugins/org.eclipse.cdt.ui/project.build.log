@@ -1,0 +1,20 @@
+14:54:16 **** Incremental Build of configuration Debug for project project ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DDEBUG -DSTM32F429xx -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function '_write':
+../Core/Src/main.c:59:2: error: 'hal' undeclared (first use in this function); did you mean 'char'?
+  hal
+  ^~~
+  char
+../Core/Src/main.c:59:2: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:60:1: error: expected ';' before '}' token
+ }
+ ^
+../Core/Src/main.c:60:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+make: *** [Core/Src/subdir.mk:33: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+
+14:54:17 Build Failed. 3 errors, 1 warnings. (took 789ms)
+

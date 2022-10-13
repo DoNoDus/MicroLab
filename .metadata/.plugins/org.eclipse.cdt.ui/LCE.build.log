@@ -1,0 +1,10 @@
+09:49:50 **** Incremental Build of configuration Debug for project LCE ****
+make -j8 all 
+arm-none-eabi-size   LCE.elf 
+   text	   data	    bss	    dec	    hex	filename
+   6520	     20	   1572	   8112	   1fb0	LCE.elf
+Finished building: default.size.stdout
+ 
+
+09:49:50 Build Finished. 0 errors, 0 warnings. (took 730ms)
+

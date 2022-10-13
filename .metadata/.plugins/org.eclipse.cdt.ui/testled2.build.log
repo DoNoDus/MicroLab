@@ -1,0 +1,13 @@
+20:44:24 **** Incremental Build of configuration Debug for project testled2 ****
+make -j8 all 
+arm-none-eabi-size   testled2.elf 
+arm-none-eabi-objcopy  -O ihex  testled2.elf  "testled2.hex"
+   text	   data	    bss	    dec	    hex	filename
+  49764	    156	  37660	  87580	  1561c	testled2.elf
+Finished building: default.size.stdout
+ 
+Finished building: testled2.hex
+ 
+
+20:44:25 Build Finished. 0 errors, 0 warnings. (took 1s.340ms)
+
