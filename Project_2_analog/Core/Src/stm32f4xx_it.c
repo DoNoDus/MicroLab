@@ -57,6 +57,8 @@
 
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -198,6 +200,22 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles EXTI line0 interrupt.
+  */
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+
+	mode_check++;
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  /* USER CODE END EXTI0_IRQn 1 */
+}
+
+/**
   * @brief This function handles ADC1, ADC2 and ADC3 global interrupts.
   */
 void ADC_IRQHandler(void)
@@ -209,6 +227,81 @@ void ADC_IRQHandler(void)
   /* USER CODE BEGIN ADC_IRQn 1 */
 
   /* USER CODE END ADC_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM1 update interrupt and TIM10 global interrupt.
+  */
+void TIM1_UP_TIM10_IRQHandler(void) //check every 10 mm_seconds
+{
+  /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 0 */
+
+	HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
+	HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
+
+//	interrupt
+	if(mode_check != 0){
+		mode_count++;
+
+		//   >>> pause or play <<<<< /*timer mode*/
+		if(mode == 3 && mode_count == 1){ // change mode == timer mode
+			if(timer_start == 0) timer_start = 1;
+			else timer_start = 0;
+		}
+	}
+	if(mode_count < 50 && mode_check >= 2){
+		cls_lcd++;
+		mode++;
+		if(mode == 4) mode = 1; // config amount mode here
+		mode_count = 0;
+		mode_check = 0;
+	}
+	if(mode_count == 50) {
+		mode_count = 0;
+		mode_check =0;
+	}
+
+  /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim1);
+  /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
+
+  /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM2 global interrupt.
+  */
+void TIM2_IRQHandler(void) //check every 1 mm_seconds
+{
+  /* USER CODE BEGIN TIM2_IRQn 0 */
+	// timer //
+	if(timer_start == 1){
+		if(mm_seconds == 1000){
+			seconds++;
+			mm_seconds = 0;
+		}
+		if (seconds == 60){
+			minute++;
+			seconds = 0;
+		}
+		if (minute == 60){
+			hour++;
+			minute = 0;
+		}
+		if (hour == 24){
+			hour = 0;
+		}
+		mm_seconds++;
+	}
+
+	//temperature led module
+	led_blink++;
+
+	/* USER CODE END TIM2_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim2);
+  /* USER CODE BEGIN TIM2_IRQn 1 */
+
+  /* USER CODE END TIM2_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
