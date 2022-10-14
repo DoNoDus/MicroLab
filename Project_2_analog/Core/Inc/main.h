@@ -48,6 +48,19 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
+// change mode
+extern volatile unsigned int mode;
+extern volatile unsigned int mode_check;
+extern volatile unsigned int mode_count;
+extern volatile unsigned int cls_lcd;
+
+// timer
+extern volatile unsigned int timer_start;
+extern volatile unsigned int hour, minute, seconds, mm_seconds;
+
+// temperature
+extern volatile unsigned int led_blink;
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

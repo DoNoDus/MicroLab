@@ -52,6 +52,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 Project_1_LCD.list \
 
+OBJCOPY_BIN += \
+Project_1_LCD.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +78,17 @@ Project_1_LCD.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+Project_1_LCD.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Project_1_LCD.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) Project_1_LCD.elf Project_1_LCD.list Project_1_LCD.map default.size.stdout
+	-$(RM) Project_1_LCD.bin Project_1_LCD.elf Project_1_LCD.list Project_1_LCD.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
