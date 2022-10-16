@@ -18,6 +18,9 @@
   */
 /* USER CODE END Header */
 
+
+// final conmit
+
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -50,10 +53,11 @@ volatile unsigned int cls_lcd = 0;
 
 //timer
 volatile unsigned int timer_start = 0;
-volatile unsigned int hour = 0, minute = 0, seconds = 55, mm_seconds = 0;
+volatile unsigned int hour = 0, minute = 0, seconds = 50, mm_seconds = 0;
 
 //temperature
 volatile unsigned int led_blink = 0;
+
 
 /* USER CODE END PM */
 
@@ -128,7 +132,7 @@ float convert_data(int raw_data, char mode){
 
 uint16_t check_temp(float temperature, char temp_mode){
 	if(temp_mode == 'F') temperature = (temperature - 32)/1.8;
-  	if(temperature >= 60) {
+  	if(temperature >= 40) {
   		if(led_blink >= 500){
   			led_blink = 0;
   			HD44780_Backlight();
@@ -138,17 +142,25 @@ uint16_t check_temp(float temperature, char temp_mode){
   		return 0x00;
   	}
   	HD44780_Backlight();
-	if(temperature >= 50) return 0x0f;
-	if(temperature >= 40) return 0x07;
-	if(temperature >= 30) return 0x03;
-	if(temperature >= 20) return 0x01;
-	return 0x00;
+	if(temperature >= 35) return 0x0f;
+	if(temperature >= 30) return 0x07;
+	if(temperature >= 25) return 0x03;
+	return 0x01;
+}
+
+int readTemp(){
+	int raw_data;
+	// Read Temperature Sensor
+	HAL_ADC_Start(&hadc1);
+	HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+	raw_data = HAL_ADC_GetValue(&hadc1);
+	HAL_ADC_Stop(&hadc1);
+	return raw_data;
 }
 
 void temperature(){
 	float temperature = 0;
 	int lcd_status = 0;
-	int raw_data = 0;
 	char msg[17];
 	char temp_mode;
 
@@ -157,19 +169,19 @@ void temperature(){
 		if(mode != 1 && mode != 2) break;
 		if(mode == 1) temp_mode = 'C';
 		else temp_mode = 'F';
+
 		// Read Temperature Sensor
-		HAL_ADC_Start(&hadc1);
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-		raw_data = HAL_ADC_GetValue(&hadc1);
-		HAL_ADC_Stop(&hadc1);
+//		HAL_ADC_Start(&hadc1);
+//		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//		raw_data = HAL_ADC_GetValue(&hadc1);
+//		HAL_ADC_Stop(&hadc1);
 
 		// Display LCD && LED
 		HD44780_SetCursor(0,0);
 		sprintf(msg, "Temperature (%c)", temp_mode);
 		HD44780_PrintStr(msg);
-
 		HD44780_SetCursor(8,1);
-		temperature = convert_data(raw_data, temp_mode);
+		temperature = convert_data(readTemp(), temp_mode);
 		sprintf(msg, "%.2f %c", temperature, temp_mode);
 		HD44780_PrintStr(msg);
 		clear_LCDtemp(temperature, lcd_status);
@@ -196,7 +208,7 @@ uint16_t led_timer(int seconds){
 void timer(){
 	char msg[17];
 	sprintf(msg, "Timer!");
-	HD44780_SetCursor(0,0);
+	HD44780_SetCursor(5,0);
 	HD44780_PrintStr(msg);
 	sprintf(msg, "%.2d : %.2d : %.2d.%d", hour, minute, seconds, mm_seconds);
 	HD44780_SetCursor(0,1);
@@ -205,6 +217,21 @@ void timer(){
 	if(minute > 0 && seconds == 0 && mm_seconds <= 100 ) HAL_GPIO_WritePin(GPIOE, GPIO_PIN_0, 1);
 	else if (minute > 0 && seconds == 0 && mm_seconds >= 200 && mm_seconds <= 300) HAL_GPIO_WritePin(GPIOE, GPIO_PIN_0, 1);
 	else HAL_GPIO_WritePin(GPIOE, GPIO_PIN_0, 0);
+
+
+	// Read Temperature Sensor
+//	HAL_ADC_Start(&hadc1);
+//	HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//	raw_data = HAL_ADC_GetValue(&hadc1);
+//	HAL_ADC_Stop(&hadc1);
+
+	if (convert_data(readTemp(), 'C') >= 40){
+		cls_lcd++;
+		mode++;
+		if(mode == 4) mode = 1; // config amount mode here
+		mode_count = 0;
+		mode_check = 0;
+	}
 }
 
 // >>>>>>>>>>>>>> END timer module <<<<<<<<<<<
@@ -263,6 +290,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
 	  clear_lcd();
 	  if(mode == 1) temperature();
 	  else if(mode == 3) timer();
